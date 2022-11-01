@@ -19,12 +19,13 @@ namespace BlobStorageIntegration
         public async Task InitBlobContainerManager(string containerName)
         {
             CloudStorageAccount? stAccount = null;
-            if(CloudStorageAccount.TryParse(Environment.GetEnvironmentVariable("StorageAccountConnectionString"), out stAccount))
+            string? connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+            if (CloudStorageAccount.TryParse(connectionString, out stAccount))
             {
                 CloudBlobClient client = stAccount.CreateCloudBlobClient();
-                CloudBlobContainer container = client.GetContainerReference(containerName);
+                _container = client.GetContainerReference(containerName);
 
-                await container.CreateIfNotExistsAsync();
+                await _container.CreateIfNotExistsAsync();
             }
         }
 
