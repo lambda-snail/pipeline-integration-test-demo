@@ -12,15 +12,20 @@ namespace BlobStorageIntegration
     /// </summary>
     public class BlobContainerManager
     {
+        string? _connectionString;
         CloudBlobContainer? _container;
 
         public bool IsInitialized => _container is not null;
 
+        public BlobContainerManager(string connectionString)
+        {
+            _connectionString = connectionString ?? throw new ArgumentNullException("Error: Connection string must not be null.");
+        }
+
         public async Task InitBlobContainerManager(string containerName)
         {
             CloudStorageAccount? stAccount = null;
-            string? connectionString = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
-            if (CloudStorageAccount.TryParse(connectionString, out stAccount))
+            if (CloudStorageAccount.TryParse(_connectionString, out stAccount))
             {
                 CloudBlobClient client = stAccount.CreateCloudBlobClient();
                 _container = client.GetContainerReference(containerName);

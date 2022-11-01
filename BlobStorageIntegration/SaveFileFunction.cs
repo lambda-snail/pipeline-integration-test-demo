@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -21,7 +22,7 @@ namespace BlobStorageIntegration
         public SaveFileFunction(ILogger<SaveFileFunction> log)
         {
             _logger = log;
-            _blobManager = new();
+            _blobManager = new(Environment.GetEnvironmentVariable("AzureWebJobsStorage")!);
         }
 
         [FunctionName("SaveFile")]
