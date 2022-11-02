@@ -50,9 +50,9 @@ public class BlobContainerManager
 
     private void EnsureInitialized()
     {
-        if (!IsInitialized) 
-        { 
-            throw new InvalidOperationException("Error: Attempt to operate on an uninitialized blob container manager."); 
+        if (!IsInitialized)
+        {
+            throw new InvalidOperationException("Error: Attempt to operate on an uninitialized blob container manager.");
         }
     }
-    }
+}
