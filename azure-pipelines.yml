@@ -1,0 +1,50 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+    checkLatest: true
+  displayName: 'Install Node'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'install -g azurite'
+  displayName: 'Install Azurite'
+
+- task: CmdLine@2
+  inputs:
+    script: 'start azurite /b'
+  displayName: 'Start Azurite (Background)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet restore'
+  inputs:
+    command: restore
+    projects: '**/*.csproj'
+    feedsToUse: 'select'
+    vstsFeed: 'IntegrationPlatform.NuGetFeed'
+    includeNuGetOrg: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'DotNet Build'
+  inputs:
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(BuildConfiguration) --no-restore'
+
+- task: DotNetCoreCLI@2
+  displayName: 'DotNet Test'
+  inputs:
+    command: test
+    projects: '**/*[Tt]ests/*.csproj'
