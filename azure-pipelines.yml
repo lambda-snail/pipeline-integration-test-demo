@@ -33,8 +33,6 @@ steps:
   inputs:
     command: restore
     projects: '**/*.csproj'
-    feedsToUse: 'select'
-    vstsFeed: 'IntegrationPlatform.NuGetFeed'
     includeNuGetOrg: true
 
 - task: DotNetCoreCLI@2
