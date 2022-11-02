@@ -24,7 +24,8 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'start azurite /b'
+    #script: 'start azurite /b'
+    script:  'azurite --silent '
   displayName: 'Start Azurite (Background)'
 
 - task: DotNetCoreCLI@2
